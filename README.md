@@ -59,7 +59,7 @@ Run `./gradlew clean build` from `fabric/` or `paper/` with **JDK 21** or newer.
 
 ## 🏷️ Credits & license
 
-Made by **Tung**.
+Made by **raincakecat**.
 
 Both projects are released under **CC0-1.0** — see their `LICENSE` files.
 
