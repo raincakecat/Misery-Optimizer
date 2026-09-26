@@ -22,7 +22,7 @@ final class MiseryOptimizerConfig {
     boolean crystalEffects = true;
     boolean crystalPlacement = true;
     boolean anchors = true;
-    boolean pearls = true;
+    boolean pearls = false;
     boolean terrainPreview = true;
     boolean slotSync = true;
     boolean blockCorrections = true;
@@ -40,7 +40,7 @@ final class MiseryOptimizerConfig {
             config.crystalEffects = bool(json, "crystalEffects", true);
             config.crystalPlacement = bool(json, "crystalPlacement", true);
             config.anchors = bool(json, "anchors", true);
-            config.pearls = bool(json, "pearls", true);
+            config.pearls = bool(json, "pearls", false);
             config.terrainPreview = bool(json, "terrainPreview", true);
             config.slotSync = bool(json, "slotSync", true);
             config.blockCorrections = bool(json, "blockCorrections", true);

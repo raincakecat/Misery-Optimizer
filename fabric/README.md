@@ -1,10 +1,10 @@
-# Misery Optimizer 1.4.1 for Minecraft 1.21.11
+# Misery Optimizer 1.4.2 for Minecraft 1.21.11
 
 Misery Optimizer is a Fabric client mod that makes crystal PvP, anchors, pearls, and explosion terrain respond immediately on high-latency connections. It works without a server plugin. The optional **MiseryOptimizerPaper** plugin adds server feedback for more precise reconciliation.
 
 ## Install and settings
 
-Install Fabric Loader for **Minecraft 1.21.11** and Fabric API. Put `MiseryOptimizer-Fabric-1.21.11-1.4.1.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `MiseryOptimizer-Paper-1.21.11-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder.
+Install Fabric Loader for **Minecraft 1.21.11** and Fabric API. Put `MiseryOptimizer-Fabric-1.21.11-1.4.2.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `MiseryOptimizer-Paper-1.21.11-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder.
 
 Press **O** in game to open the settings screen. Rebind it through **Options → Controls → Key Binds → Misery Optimizer → Open Misery Optimizer settings**. Minecraft saves the key assignment in `options.txt`; the settings below save to `config/tung.json` in the game directory:
 
@@ -20,7 +20,7 @@ Press **O** in game to open the settings screen. Rebind it through **Options →
 - Maximum number of previewed blocks (128–768)
 - Extra prediction time (0–2000 ms beyond the ping-based timeout)
 
-All previews and the early slot sync are enabled by default. Turning off the explosion block preview restores any still-pending local blocks immediately.
+Pearl projectile preview is off by default. All other previews and the early slot sync are enabled by default. Existing `config/tung.json` settings remain in effect; turn off pearl preview in the menu if that file already has it enabled. Turning off the explosion block preview restores any still-pending local blocks immediately.
 
 ## What happens in play
 
@@ -66,6 +66,6 @@ The companion plugin also loaded on Paper 1.21.11 build 132. A protocol test cli
 
 ## Build
 
-Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-optimizer-fabric-1.4.1.jar` as `MiseryOptimizer-Fabric-1.21.11-1.4.1.jar`; the `-sources.jar` is for developers.
+Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-optimizer-fabric-1.4.2.jar` as `MiseryOptimizer-Fabric-1.21.11-1.4.2.jar`; the `-sources.jar` is for developers.
 
 License: CC0-1.0.
