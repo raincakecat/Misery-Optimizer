@@ -1,5 +1,6 @@
-name: CombatSyncPaper
+name: MiseryOptimizerPaper
 version: 1.1.0
-main: dev.caydenhatch.combatsyncpaper.CombatSyncPaper
+main: dev.tung.miseryoptimizerpaper.MiseryOptimizerPaper
+author: Tung
 api-version: '1.21.11'
-description: Authoritative combat feedback for the Combat Sync Fabric client.
+description: Authoritative combat feedback for the Misery Optimizer Fabric client.

@@ -1,0 +1,21 @@
+package dev.tung.miseryoptimizer.mixin;
+
+import dev.tung.miseryoptimizer.BlockActionPreview;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+@Mixin(ClientLevel.class)
+public abstract class ClientLevelMixin {
+    @Inject(method = "setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;II)Z",
+        at = @At("HEAD"))
+    private void tung$rememberPlacement(BlockPos pos, BlockState state, int flags, int depth,
+            CallbackInfoReturnable<Boolean> cir) {
+        ClientLevel level = (ClientLevel)(Object)this;
+        BlockActionPreview.recordSetBlock(level, pos, level.getBlockState(pos));
+    }
+}

@@ -1,4 +1,4 @@
-# Send exact explosion block lists to nearby Combat Sync clients.
+# Send exact explosion block lists to nearby Misery Optimizer clients.
 explosion-feedback: true
 # The packet is skipped when an explosion exceeds this many blocks.
 max-explosion-blocks: 2048

@@ -1,12 +1,12 @@
-# Combat Sync 1.4.1 for Minecraft 1.21.11
+# Misery Optimizer 1.4.1 for Minecraft 1.21.11
 
-Combat Sync is a Fabric client mod that makes crystal PvP, anchors, pearls, and explosion terrain respond immediately on high-latency connections. It works without a server plugin. The optional **CombatSyncPaper** plugin adds server feedback for more precise reconciliation.
+Misery Optimizer is a Fabric client mod that makes crystal PvP, anchors, pearls, and explosion terrain respond immediately on high-latency connections. It works without a server plugin. The optional **MiseryOptimizerPaper** plugin adds server feedback for more precise reconciliation.
 
 ## Install and settings
 
-Install Fabric Loader for **Minecraft 1.21.11** and Fabric API. Put `combat-sync-fabric-1.4.1.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `CombatSync-Paper-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder.
+Install Fabric Loader for **Minecraft 1.21.11** and Fabric API. Put `MiseryOptimizer-Fabric-1.21.11-1.4.1.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `MiseryOptimizer-Paper-1.21.11-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder.
 
-Press **O** in game to open the settings screen. Rebind it through **Options → Controls → Key Binds → Combat Sync → Open Combat Sync settings**. Minecraft saves the key assignment in `options.txt`; the settings below save to `config/combatsync.json` in the game directory:
+Press **O** in game to open the settings screen. Rebind it through **Options → Controls → Key Binds → Misery Optimizer → Open Misery Optimizer settings**. Minecraft saves the key assignment in `options.txt`; the settings below save to `config/tung.json` in the game directory:
 
 - Crystal break prediction
 - Immediate crystal explosion sound and particle
@@ -49,7 +49,7 @@ The block preview uses Minecraft-style explosion rays with a middle-strength est
 
 ## Optional Paper feedback
 
-When CombatSyncPaper is installed, the server sends its actual crystal and anchor explosion block list to nearby clients with this mod. The client corrects its local preview to match and still uses ordinary Minecraft block updates as final confirmation. The server also reports canceled crystal hits, anchor uses, crystal placements, pearl throws, ordinary block placement, block breaking, and food consumption so the client can remove or restore a rejected preview sooner. The plugin caps custom feedback bandwidth during explosion spam. It changes no vanilla damage, knockback, explosion terrain, item use, or action ordering. It does not lower ping or optimize Paper's explosion computation. A server event canceled by another plugin may still have an effect that its plugin reports differently; normal packets remain authoritative.
+When MiseryOptimizerPaper is installed, the server sends its actual crystal and anchor explosion block list to nearby clients with this mod. The client corrects its local preview to match and still uses ordinary Minecraft block updates as final confirmation. The server also reports canceled crystal hits, anchor uses, crystal placements, pearl throws, ordinary block placement, block breaking, and food consumption so the client can remove or restore a rejected preview sooner. The plugin caps custom feedback bandwidth during explosion spam. It changes no vanilla damage, knockback, explosion terrain, item use, or action ordering. It does not lower ping or optimize Paper's explosion computation. A server event canceled by another plugin may still have an effect that its plugin reports differently; normal packets remain authoritative.
 
 ## Verification
 
@@ -66,6 +66,6 @@ The companion plugin also loaded on Paper 1.21.11 build 132. A protocol test cli
 
 ## Build
 
-Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/combat-sync-fabric-1.4.1.jar`; the `-sources.jar` is for developers.
+Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-optimizer-fabric-1.4.1.jar` as `MiseryOptimizer-Fabric-1.21.11-1.4.1.jar`; the `-sources.jar` is for developers.
 
 License: CC0-1.0.

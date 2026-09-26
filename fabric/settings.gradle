@@ -9,4 +9,4 @@ pluginManagement {
 	}
 }
 
-rootProject.name = 'combat-sync-fabric'
+rootProject.name = 'misery-optimizer-fabric'

@@ -1,6 +1,6 @@
-# Combat Sync for Minecraft 1.21.11
+# Misery Optimizer for Minecraft 1.21.11
 
-Combat Sync is a Fabric client mod for faster local feedback during crystal PvP. An optional Paper plugin sends explosion block lists and rejection notices so the client can correct previews sooner. Both projects are kept in this repository.
+Misery Optimizer is a Fabric client mod for faster local feedback during crystal PvP. An optional Paper plugin sends explosion block lists and rejection notices so the client can correct previews sooner. Both projects are kept in this repository.
 
 ## Layout
 
@@ -13,16 +13,16 @@ Combat Sync is a Fabric client mod for faster local feedback during crystal PvP.
 ## Install
 
 1. Install Fabric Loader and Fabric API for Minecraft **1.21.11** on the client. Use Java 21 or newer.
-2. Put [`CombatSync-Fabric-1.21.11-1.4.1.jar`](jars/CombatSync-Fabric-1.21.11-1.4.1.jar) in the client's `mods` folder.
-3. Optionally, put [`CombatSync-Paper-1.21.11-1.1.0.jar`](jars/CombatSync-Paper-1.21.11-1.1.0.jar) in a Paper 1.21.11 server's `plugins` folder and restart the server.
+2. Put [`MiseryOptimizer-Fabric-1.21.11-1.4.1.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.1.jar) in the client's `mods` folder.
+3. Optionally, put [`MiseryOptimizer-Paper-1.21.11-1.1.0.jar`](jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar) in a Paper 1.21.11 server's `plugins` folder and restart the server.
 
-The client mod runs without the Paper plugin. Press **O** to open its settings menu. Rebind that key under **Options → Controls → Key Binds → Combat Sync**.
+The client mod runs without the Paper plugin. Press **O** to open its settings menu. Rebind that key under **Options → Controls → Key Binds → Misery Optimizer**.
 
 ## Scope
 
 The client previews crystal placement and break effects, charged-anchor explosions outside the Nether, ender-pearl flight, and nearby explosion terrain. It also sends a pending hotbar slot before mining and tracks local eating animation timing. With the Paper plugin, canceled actions and explosion block lists can correct those previews sooner. See [`fabric/README.md`](fabric/README.md) and [`paper/README.md`](paper/README.md) for behavior, configuration, and test details.
 
-Combat Sync does not reduce network latency or server tick time. The server still decides damage, knockback, terrain destruction, food effects, pearl teleportation, and whether an action succeeds. It does not change hit registration or PvP rules.
+Misery Optimizer does not reduce network latency or server tick time. The server still decides damage, knockback, terrain destruction, food effects, pearl teleportation, and whether an action succeeds. It does not change hit registration or PvP rules.
 
 ## Build
 

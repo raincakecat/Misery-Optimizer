@@ -1,1 +1,1 @@
-rootProject.name = "combat-sync-paper"
+rootProject.name = "misery-optimizer-paper"
