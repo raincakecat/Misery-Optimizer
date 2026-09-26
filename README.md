@@ -1,8 +1,30 @@
-# Misery Optimizer for Minecraft 1.21.11
+<p align="center">
+  <img src="fabric/src/client/resources/assets/tung/icon.png" width="128" alt="Misery Optimizer icon">
+</p>
 
-Misery Optimizer is a Fabric client mod for faster local feedback during crystal PvP. An optional Paper plugin sends explosion block lists and rejection notices so the client can correct previews sooner. Both projects are kept in this repository.
+<h1 align="center">Misery Optimizer</h1>
 
-## Layout
+<p align="center">
+  <em><strong>A Fabric client mod for instant combat feedback in crystal PvP — tung tung tung 🥁</strong></em>
+</p>
+
+<p align="center">
+  <a href="#-install-client"><img src="https://img.shields.io/badge/Minecraft-1.21.11-green" alt="Minecraft 1.21.11"></a>
+  <a href="#-install-client"><img src="https://img.shields.io/badge/Java-21-blue" alt="Java 21"></a>
+  <a href="#-install-client"><img src="https://img.shields.io/badge/requires-Fabric%20API-blueviolet" alt="Fabric API"></a>
+  <a href="#-install-client"><img src="https://img.shields.io/badge/Mod%20ID-tung-orange" alt="Mod ID tung"></a>
+  <img src="https://img.shields.io/badge/License-CC0--1.0-lightgrey" alt="CC0-1.0">
+</p>
+
+---
+
+**Misery Optimizer** (mod id `tung`) is a client-side Fabric mod for **Minecraft 1.21.11** that makes crystal PvP feel immediate on high-latency connections. On your client it previews end crystal placement and break effects, charged respawn anchor explosions outside the Nether, ender-pearl flight, nearby explosion terrain, and the finish of the local eating animation — all before the server confirms anything. It also sends a pending hotbar slot before mining, and it is fully configurable from the in-game settings menu on key **O**. An optional **Paper plugin** sends exact explosion block lists and rejection notices so the client can correct its previews sooner.
+
+### Honest scope
+
+The mod does **not** reduce network latency or server tick time. The server stays authoritative: it still decides damage, knockback, terrain destruction, food effects, pearl teleportation, and whether an action ever succeeds. It does not change hit registration or PvP rules. What it gives you is *feedback* — the world responds instantly to *you*, then reconciles with what really happened.
+
+## 📁 Repository layout
 
 | Path | Contents |
 | --- | --- |
@@ -10,22 +32,35 @@ Misery Optimizer is a Fabric client mod for faster local feedback during crystal
 | [`paper/`](paper/) | Optional Paper plugin source, Gradle wrapper, and server configuration |
 | [`jars/`](jars/) | Ready-to-install Minecraft 1.21.11 JARs |
 
-## Install
+## 🔧 Install (client)
 
-1. Install Fabric Loader and Fabric API for Minecraft **1.21.11** on the client. Use Java 21 or newer.
-2. Put [`MiseryOptimizer-Fabric-1.21.11-1.4.1.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.1.jar) in the client's `mods` folder.
-3. Optionally, put [`MiseryOptimizer-Paper-1.21.11-1.1.0.jar`](jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar) in a Paper 1.21.11 server's `plugins` folder and restart the server.
+1. Install **Fabric Loader** and **Fabric API** for Minecraft **1.21.11** and run **Java 21** or newer.
+2. Drop this jar into the client's `mods` folder:
 
-The client mod runs without the Paper plugin. Press **O** to open its settings menu. Rebind that key under **Options → Controls → Key Binds → Misery Optimizer**.
+   | Project | Jar for your `mods` / `plugins` folder |
+   | --- | --- |
+   | Fabric client mod → `mods` | [`jars/MiseryOptimizer-Fabric-1.21.11-1.4.1.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.1.jar) |
+   | Paper plugin (optional) → `plugins` | [`jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar`](jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar) |
 
-## Scope
+3. Press **O** in game to open the settings menu: crystal break prediction, crystal placement preview, anchor feedback, ender-pearl projectile preview with adjustable server handoff (0–9 ticks), explosion block preview with a maximum number of previewed blocks (128–768), early hotbar synchronization before mining, and local eating animation completion at the normal item duration.
+4. Rebind the settings key under **Options → Controls → Key Binds → Misery Optimizer**. All settings save to `config/tung.json` in the game directory.
 
-The client previews crystal placement and break effects, charged-anchor explosions outside the Nether, ender-pearl flight, and nearby explosion terrain. It also sends a pending hotbar slot before mining and tracks local eating animation timing. With the Paper plugin, canceled actions and explosion block lists can correct those previews sooner. See [`fabric/README.md`](fabric/README.md) and [`paper/README.md`](paper/README.md) for behavior, configuration, and test details.
+See [`fabric/README.md`](fabric/README.md) for full behavior, configuration, and test details.
 
-Misery Optimizer does not reduce network latency or server tick time. The server still decides damage, knockback, terrain destruction, food effects, pearl teleportation, and whether an action succeeds. It does not change hit registration or PvP rules.
+## 🐟 Optional Paper plugin
 
-## Build
+For the tightest reconciliation, install [`MiseryOptimizer-Paper-1.21.11-1.1.0.jar`](jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar) on a Paper 1.21.11 server (Java 21) and restart. It sends exact server block lists for crystal and charged-anchor explosions (defaults: 2048 max blocks, 96-block range, 16 KiB per player per tick — see `plugins/MiseryOptimizerPaper/config.yml`) and rejection notices when another plugin cancels a crystal hit, anchor use, pearl throw, ordinary block placement/breaking, or food consumption. The client mod works fine without it.
 
-From either `fabric/` or `paper/`, run `./gradlew clean build` with JDK 21 or newer. The installable outputs appear in that project's `build/libs/`. The checked-in `jars/` files are the release builds from these sources.
+Details: [`paper/README.md`](paper/README.md).
 
-Both projects use the CC0-1.0 license; see their `LICENSE` files.
+## ⚙️ Building
+
+Run `./gradlew clean build` from `fabric/` or `paper/` with **JDK 21** or newer. The installable JAR appears in that project's `build/libs/`; the checked-in `jars/` are the release builds from these sources.
+
+## 🏷️ Credits & license
+
+Made by **Tung**.
+
+Both projects are released under **CC0-1.0** — see their `LICENSE` files.
+
+<p align="center"><sub>tung tung tung 🥁</sub></p>
