@@ -1,0 +1,8 @@
+# Send exact explosion block lists to nearby Combat Sync clients.
+explosion-feedback: true
+# The packet is skipped when an explosion exceeds this many blocks.
+max-explosion-blocks: 2048
+# Only players within this distance receive explosion feedback.
+feedback-range: 96
+# Bound custom explosion feedback during heavy crystal spam; vanilla packets still arrive.
+max-feedback-bytes-per-tick: 16384

@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "dev.caydenhatch.combatsync.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "MultiPlayerGameModeMixin",
+    "EntityRenderDispatcherMixin",
+    "GameRendererMixin",
+    "ClientPacketListenerMixin",
+    "ClientLevelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
