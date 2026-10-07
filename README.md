@@ -34,12 +34,12 @@ The mod does **not** reduce network latency or server tick time. The server stay
 
 ## 🔧 Install (client)
 
-1. Install **Fabric Loader** and **Fabric API** for Minecraft **1.21.11** and run **Java 21** or newer.
+1. Install **Fabric Loader 0.18.1 or newer** and **Fabric API** for Minecraft **1.21.11** and run **Java 21** or newer.
 2. Drop this jar into the client's `mods` folder:
 
    | Project | Jar for your `mods` / `plugins` folder |
    | --- | --- |
-   | Fabric client mod → `mods` | [`jars/MiseryOptimizer-Fabric-1.21.11-1.4.2.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.2.jar) |
+   | Fabric client mod → `mods` | [`jars/MiseryOptimizer-Fabric-1.21.11-1.4.3.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.3.jar) |
    | Paper plugin (optional) → `plugins` | [`jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar`](jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar) |
 
 3. Press **O** in game to open the settings menu: crystal break prediction, crystal placement preview, anchor feedback, ender-pearl projectile preview with adjustable server handoff (0–9 ticks), explosion block preview with a maximum number of previewed blocks (128–768), early hotbar synchronization before mining, and local eating animation completion at the normal item duration.

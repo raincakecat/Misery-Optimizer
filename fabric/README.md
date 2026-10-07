@@ -1,10 +1,12 @@
-# Misery Optimizer 1.4.2 for Minecraft 1.21.11
+# Misery Optimizer 1.4.3 for Minecraft 1.21.11
 
 Misery Optimizer is a Fabric client mod that makes crystal PvP, anchors, pearls, and explosion terrain respond immediately on high-latency connections. It works without a server plugin. The optional **MiseryOptimizerPaper** plugin adds server feedback for more precise reconciliation.
 
 ## Install and settings
 
-Install Fabric Loader for **Minecraft 1.21.11** and Fabric API. Put `MiseryOptimizer-Fabric-1.21.11-1.4.2.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `MiseryOptimizer-Paper-1.21.11-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder.
+Install Fabric Loader **0.18.1 or newer** for **Minecraft 1.21.11** and Fabric API for 1.21.11. Put `MiseryOptimizer-Fabric-1.21.11-1.4.3.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `MiseryOptimizer-Paper-1.21.11-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder. The mod supports Loader 0.18.1 through the current 0.19.5 release; it does not support other Minecraft versions.
+
+Keep only one Misery Optimizer client JAR in the profile. If a launcher still fails, collect that launcher's complete game log or crash report; a loader incompatibility message, mixin error, and missing Fabric API require different fixes.
 
 Press **O** in game to open the settings screen. Rebind it through **Options → Controls → Key Binds → Misery Optimizer → Open Misery Optimizer settings**. Minecraft saves the key assignment in `options.txt`; the settings below save to `config/tung.json` in the game directory:
 
@@ -66,6 +68,8 @@ The companion plugin also loaded on Paper 1.21.11 build 132. A protocol test cli
 
 ## Build
 
-Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-optimizer-fabric-1.4.2.jar` as `MiseryOptimizer-Fabric-1.21.11-1.4.2.jar`; the `-sources.jar` is for developers.
+Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-optimizer-fabric-1.4.3.jar` as `MiseryOptimizer-Fabric-1.21.11-1.4.3.jar`; the `-sources.jar` is for developers.
+
+The 1.4.3 source builds and passes tests with both Fabric Loader 0.18.1 and 0.19.5. The packaged release JAR is built against 0.18.1. These build checks do not establish compatibility with every launcher or other installed mod.
 
 License: CC0-1.0.
