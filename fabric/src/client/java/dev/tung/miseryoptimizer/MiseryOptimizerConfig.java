@@ -24,6 +24,7 @@ final class MiseryOptimizerConfig {
     boolean anchors = true;
     boolean pearls = false;
     boolean terrainPreview = true;
+    boolean safeTerrainPreview = true;
     boolean slotSync = true;
     boolean blockCorrections = true;
     boolean foodTiming = true;
@@ -42,6 +43,7 @@ final class MiseryOptimizerConfig {
             config.anchors = bool(json, "anchors", true);
             config.pearls = bool(json, "pearls", false);
             config.terrainPreview = bool(json, "terrainPreview", true);
+            config.safeTerrainPreview = bool(json, "safeTerrainPreview", true);
             config.slotSync = bool(json, "slotSync", true);
             config.blockCorrections = bool(json, "blockCorrections", true);
             config.foodTiming = bool(json, "foodTiming", true);
@@ -62,6 +64,7 @@ final class MiseryOptimizerConfig {
         json.addProperty("anchors", anchors);
         json.addProperty("pearls", pearls);
         json.addProperty("terrainPreview", terrainPreview);
+        json.addProperty("safeTerrainPreview", safeTerrainPreview);
         json.addProperty("slotSync", slotSync);
         json.addProperty("blockCorrections", blockCorrections);
         json.addProperty("foodTiming", foodTiming);

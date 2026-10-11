@@ -2,6 +2,8 @@ package dev.tung.miseryoptimizer.mixin;
 
 import dev.tung.miseryoptimizer.MiseryOptimizerClient;
 import dev.tung.miseryoptimizer.FoodUsePreview;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -19,7 +21,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPacketListener.class)
@@ -72,21 +73,23 @@ public abstract class ClientPacketListenerMixin {
             && MiseryOptimizerClient.predictedCrystalExplosion(packet.center());
     }
 
-    @Redirect(method = "handleExplosion", at = @At(value = "INVOKE",
+    @WrapOperation(method = "handleExplosion", at = @At(value = "INVOKE",
         target = "Lnet/minecraft/client/multiplayer/ClientLevel;playLocalSound(DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FFZ)V"))
     private void tung$avoidDuplicateSound(ClientLevel level, double x, double y, double z,
-            SoundEvent sound, SoundSource source, float volume, float pitch, boolean distanceDelay) {
+            SoundEvent sound, SoundSource source, float volume, float pitch, boolean distanceDelay,
+            Operation<Void> original) {
         if (!tung$suppressAnchorEffect && !tung$suppressCrystalEffect) {
-            level.playLocalSound(x, y, z, sound, source, volume, pitch, distanceDelay);
+            original.call(level, x, y, z, sound, source, volume, pitch, distanceDelay);
         }
     }
 
-    @Redirect(method = "handleExplosion", at = @At(value = "INVOKE",
+    @WrapOperation(method = "handleExplosion", at = @At(value = "INVOKE",
         target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private void tung$avoidDuplicateParticle(ClientLevel level, ParticleOptions particle,
-            double x, double y, double z, double dx, double dy, double dz) {
+            double x, double y, double z, double dx, double dy, double dz,
+            Operation<Void> original) {
         if (!tung$suppressAnchorEffect && !tung$suppressCrystalEffect) {
-            level.addParticle(particle, x, y, z, dx, dy, dz);
+            original.call(level, particle, x, y, z, dx, dy, dz);
         }
     }
 

@@ -5,6 +5,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.multiplayer.PlayerInfo;
@@ -35,6 +36,8 @@ public final class MiseryOptimizerClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         MiseryOptimizerFeedback.register();
+        WorldRenderEvents.END_EXTRACTION.register(ExplosionPreview::extractSafePreview);
+        WorldRenderEvents.BEFORE_DEBUG_RENDER.register(ExplosionPreview::renderSafePreview);
         openConfig = KeyBindingHelper.registerKeyBinding(new KeyMapping(
             "key.tung.open_config", GLFW.GLFW_KEY_O, KEY_CATEGORY));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

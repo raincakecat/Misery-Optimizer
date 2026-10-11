@@ -10,24 +10,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
+import net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState;
+import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldExtractionContext;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.ShapeRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
 
 /** Reversible local block preview. Never sends block edits to the server. */
 final class ExplosionPreview {
     private static final int MAX_STEPS_PER_RAY = 64;
+    private static final int MAX_VISIBLE_OUTLINES = 128;
+    private static final RenderStateDataKey<List<Vec3>> SAFE_OUTLINES = RenderStateDataKey.create();
     private static final double[] RAYS = createRays();
     private static final Map<Long, PredictedBlock> PENDING = new LinkedHashMap<>();
     private static final List<Batch> BATCHES = new ArrayList<>();
     private static ClientLevel predictedLevel;
 
-    private record PredictedBlock(BlockState original, long deadline) {}
+    private record PredictedBlock(BlockState original, long deadline, boolean safe) {}
     private record Batch(Vec3 center, int crystalId, long anchorPos, Set<Long> blocks, long deadline) {}
     private record BlockInfo(BlockState state, float resistance, boolean outOfWorld) {}
 
@@ -133,21 +142,23 @@ final class ExplosionPreview {
         ordered.sort(Comparator.comparingDouble(key -> BlockPos.of(key).distToCenterSqr(center.x, center.y, center.z)));
         AABB playerSupport = client.player.getBoundingBox().inflate(0.15, 0.0, 0.15)
             .expandTowards(0.0, -0.6, 0.0);
+        boolean safe = MiseryOptimizerClient.config().safeTerrainPreview;
         Set<Long> batchBlocks = new HashSet<>();
         for (long key : ordered) {
             if (PENDING.size() >= MiseryOptimizerClient.config().maxPreviewBlocks && !PENDING.containsKey(key)) break;
             PredictedBlock existing = PENDING.get(key);
             if (existing != null) {
-                PENDING.put(key, new PredictedBlock(existing.original, Math.max(existing.deadline, deadline)));
+                PENDING.put(key, new PredictedBlock(existing.original,
+                    Math.max(existing.deadline, deadline), existing.safe));
                 batchBlocks.add(key);
                 continue;
             }
             BlockPos pos = BlockPos.of(key);
             // Keep the player's immediate collision/support blocks until the server updates them.
-            if (playerSupport.intersects(new AABB(pos))) continue;
+            if (!safe && playerSupport.intersects(new AABB(pos))) continue;
             BlockState original = level.getBlockState(pos);
-            if (level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2)) {
-                PENDING.put(key, new PredictedBlock(original, deadline));
+            if (safe || level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2)) {
+                PENDING.put(key, new PredictedBlock(original, deadline, safe));
                 batchBlocks.add(key);
             }
         }
@@ -179,16 +190,17 @@ final class ExplosionPreview {
         // still confirm each edit and recover if another plugin changes the list afterward.
         AABB playerSupport = client.player.getBoundingBox()
             .inflate(0.15, 0.0, 0.15).expandTowards(0.0, -0.6, 0.0);
+        boolean safe = MiseryOptimizerClient.config().safeTerrainPreview;
         for (long key : exactBlocks) {
             if (PENDING.containsKey(key)) continue;
             if (PENDING.size() >= MiseryOptimizerClient.config().maxPreviewBlocks) break;
             BlockPos pos = BlockPos.of(key);
             if (!predictedLevel.hasChunkAt(pos)) continue;
-            if (playerSupport.intersects(new AABB(pos))) continue;
+            if (!safe && playerSupport.intersects(new AABB(pos))) continue;
             BlockState original = predictedLevel.getBlockState(pos);
             if (original.isAir() || original.hasBlockEntity()) continue;
-            if (predictedLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 2)) {
-                PENDING.put(key, new PredictedBlock(original, match.deadline));
+            if (safe || predictedLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 2)) {
+                PENDING.put(key, new PredictedBlock(original, match.deadline, safe));
             }
         }
     }
@@ -219,7 +231,7 @@ final class ExplosionPreview {
         PredictedBlock prediction = PENDING.remove(key);
         if (prediction == null || predictedLevel == null) return;
         BlockPos pos = BlockPos.of(key);
-        if (predictedLevel.getBlockState(pos).isAir()) {
+        if (!prediction.safe && predictedLevel.getBlockState(pos).isAir()) {
             predictedLevel.setBlock(pos, prediction.original, 2);
         }
     }
@@ -247,7 +259,8 @@ final class ExplosionPreview {
             Map.Entry<Long, PredictedBlock> entry = iterator.next();
             if (entry.getValue().deadline > now) continue;
             BlockPos pos = BlockPos.of(entry.getKey());
-            if (predictedLevel != null && predictedLevel.getBlockState(pos).isAir()) {
+            if (predictedLevel != null && !entry.getValue().safe
+                && predictedLevel.getBlockState(pos).isAir()) {
                 predictedLevel.setBlock(pos, entry.getValue().original, 2);
             }
             iterator.remove();
@@ -264,7 +277,7 @@ final class ExplosionPreview {
         if (predictedLevel != null && Minecraft.getInstance().level == predictedLevel) {
             for (Map.Entry<Long, PredictedBlock> entry : PENDING.entrySet()) {
                 BlockPos pos = BlockPos.of(entry.getKey());
-                if (predictedLevel.getBlockState(pos).isAir()) {
+                if (!entry.getValue().safe && predictedLevel.getBlockState(pos).isAir()) {
                     predictedLevel.setBlock(pos, entry.getValue().original, 2);
                 }
             }
@@ -272,5 +285,40 @@ final class ExplosionPreview {
         clear();
     }
 
+    static void extractSafePreview(WorldExtractionContext context) {
+        FabricRenderState state = (FabricRenderState) context.worldState();
+        if (predictedLevel != context.world() || !MiseryOptimizerClient.config().terrainPreview
+            || !MiseryOptimizerClient.config().safeTerrainPreview) {
+            state.setData(SAFE_OUTLINES, List.of());
+            return;
+        }
+        Vec3 camera = context.camera().position();
+        List<Long> visible = new ArrayList<>();
+        for (Map.Entry<Long, PredictedBlock> entry : PENDING.entrySet()) {
+            if (!entry.getValue().safe) continue;
+            BlockPos pos = BlockPos.of(entry.getKey());
+            if (pos.distToCenterSqr(camera.x, camera.y, camera.z) > 72.0 * 72.0
+                || !context.frustum().isVisible(new AABB(pos))) continue;
+            visible.add(entry.getKey());
+        }
+        visible.sort(Comparator.comparingDouble(key -> BlockPos.of(key)
+            .distToCenterSqr(camera.x, camera.y, camera.z)));
+        List<Vec3> offsets = new ArrayList<>(Math.min(visible.size(), MAX_VISIBLE_OUTLINES));
+        for (int i = 0; i < visible.size() && i < MAX_VISIBLE_OUTLINES; i++) {
+            BlockPos pos = BlockPos.of(visible.get(i));
+            offsets.add(new Vec3(pos.getX() - camera.x, pos.getY() - camera.y,
+                pos.getZ() - camera.z));
+        }
+        state.setData(SAFE_OUTLINES, List.copyOf(offsets));
+    }
 
+    static void renderSafePreview(WorldRenderContext context) {
+        List<Vec3> offsets = ((FabricRenderState) context.worldState()).getData(SAFE_OUTLINES);
+        if (offsets == null || offsets.isEmpty()) return;
+        var lines = context.consumers().getBuffer(RenderTypes.lines());
+        for (Vec3 offset : offsets) {
+            ShapeRenderer.renderShape(context.matrices(), lines, Shapes.block(),
+                offset.x, offset.y, offset.z, 0xCCFFAA00, 1.5F);
+        }
+    }
 }

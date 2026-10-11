@@ -46,12 +46,18 @@ final class MiseryOptimizerConfigScreen extends Screen {
             button.setMessage(label("Pearl prediction", config.pearls));
             config.save();
         }).bounds(x, y + 66, 220, 20).build());
-        addRenderableWidget(Button.builder(label("Explosion block preview", config.terrainPreview), button -> {
+        addRenderableWidget(Button.builder(label("Terrain preview", config.terrainPreview), button -> {
             config.terrainPreview = !config.terrainPreview;
             if (!config.terrainPreview) ExplosionPreview.restoreAll();
-            button.setMessage(label("Explosion block preview", config.terrainPreview));
+            button.setMessage(label("Terrain preview", config.terrainPreview));
             config.save();
-        }).bounds(x, y + 88, 220, 20).build());
+        }).bounds(x, y + 88, 108, 20).build());
+        addRenderableWidget(Button.builder(label("Safe outlines", config.safeTerrainPreview), button -> {
+            config.safeTerrainPreview = !config.safeTerrainPreview;
+            ExplosionPreview.restoreAll();
+            button.setMessage(label("Safe outlines", config.safeTerrainPreview));
+            config.save();
+        }).bounds(x + 112, y + 88, 108, 20).build());
         addRenderableWidget(Button.builder(label("Early slot", config.slotSync), button -> {
             config.slotSync = !config.slotSync;
             button.setMessage(label("Early slot", config.slotSync));

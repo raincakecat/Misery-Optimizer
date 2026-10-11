@@ -39,11 +39,11 @@ The mod does **not** reduce network latency or server tick time. The server stay
 
    | Project | Jar for your `mods` / `plugins` folder |
    | --- | --- |
-   | Fabric client mod → `mods` | [`jars/MiseryOptimizer-Fabric-1.21.11-1.4.3.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.3.jar) |
+   | Fabric client mod → `mods` | [`jars/MiseryOptimizer-Fabric-1.21.11-1.4.4.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.4.jar) |
    | Paper plugin (optional) → `plugins` | [`jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar`](jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar) |
 
-3. Press **O** in game to open the settings menu: crystal break prediction, crystal placement preview, anchor feedback, ender-pearl projectile preview with adjustable server handoff (0–9 ticks), explosion block preview with a maximum number of previewed blocks (128–768), early hotbar synchronization before mining, and local eating animation completion at the normal item duration.
-4. Rebind the settings key under **Options → Controls → Key Binds → Misery Optimizer**. Pearl projectile preview is off by default; existing settings in `config/tung.json` keep their saved value.
+3. Press **O** in game to open the settings menu: crystal break prediction, crystal placement preview, anchor feedback, ender-pearl projectile preview with adjustable server handoff (0–9 ticks), safe outline terrain preview with a maximum number of predicted blocks (128–768), early hotbar synchronization before mining, and local eating animation completion at the normal item duration.
+4. Rebind the settings key under **Options → Controls → Key Binds → Misery Optimizer**. Pearl projectile preview is off by default. Safe terrain outlines are on by default; the older temporary-hole preview is available by turning **Safe outlines** off. Existing settings in `config/tung.json` keep their saved values.
 
 See [`fabric/README.md`](fabric/README.md) for full behavior, configuration, and test details.
 
