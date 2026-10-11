@@ -1,5 +1,11 @@
 # Modrinth upload sheet: Misery Optimizer 1.4.6
 
+## Minecraft 26.3 build
+
+Upload [`jars/MiseryOptimizer-Fabric-26.3-1.5.0.jar`](jars/MiseryOptimizer-Fabric-26.3-1.5.0.jar) as a **separate Fabric version** numbered `1.5.0`, targeting **Minecraft 26.3 only**. It requires Fabric Loader 0.19.5 or newer, Fabric API for 26.3, and Java 25 or newer. SHA-256: `A89BEA8E619F12A3FC837BAECEA5FA744BA092ED9EACD321228F7871B50C2718`.
+
+The 26.3 source builds, passes its test task, and reached the main menu in a muted Fabric development client. Gameplay features have not yet been exercised in a 26.3 world. The optional Paper plugin below targets 1.21.11 only.
+
 ## Upload file and version settings
 
 - Project type: Mod

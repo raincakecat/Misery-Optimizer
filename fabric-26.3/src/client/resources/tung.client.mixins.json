@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "dev.tung.miseryoptimizer.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "MultiPlayerGameModeMixin",
+    "EntityRenderDispatcherMixin",
+    "GameRendererMixin",
+    "ClientPacketListenerMixin",
+    "ClientLevelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

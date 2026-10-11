@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "tung",
+  "version": "${version}",
+  "name": "Misery Optimizer",
+  "description": "Client-side combat responsiveness for crystals, anchors, pearls, eating visuals, and rejected block actions with an in-game settings menu.",
+  "authors": ["Tung"],
+  "license": "CC0-1.0",
+  "environment": "client",
+  "icon": "assets/tung/icon.png",
+  "entrypoints": {
+    "client": ["dev.tung.miseryoptimizer.MiseryOptimizerClient"]
+  },
+  "mixins": [
+    {
+      "config": "tung.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}

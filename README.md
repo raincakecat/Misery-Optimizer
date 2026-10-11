@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="#-install-client"><img src="https://img.shields.io/badge/Minecraft-1.21.11-green" alt="Minecraft 1.21.11"></a>
-  <a href="#-install-client"><img src="https://img.shields.io/badge/Java-21-blue" alt="Java 21"></a>
+  <a href="#-install-client"><img src="https://img.shields.io/badge/Minecraft-1.21.11%20%7C%2026.3-green" alt="Minecraft 1.21.11 or 26.3"></a>
+  <a href="#-install-client"><img src="https://img.shields.io/badge/Java-21%20%7C%2025-blue" alt="Java 21 or 25"></a>
   <a href="#-install-client"><img src="https://img.shields.io/badge/requires-Fabric%20API-blueviolet" alt="Fabric API"></a>
   <a href="#-install-client"><img src="https://img.shields.io/badge/Mod%20ID-tung-orange" alt="Mod ID tung"></a>
   <img src="https://img.shields.io/badge/License-CC0--1.0-lightgrey" alt="CC0-1.0">
@@ -18,7 +18,7 @@
 
 ---
 
-**Misery Optimizer** (mod id `tung`) is a client-side Fabric mod for **Minecraft 1.21.11** that makes crystal PvP feel immediate on high-latency connections. On your client it previews end crystal placement and break effects, charged respawn anchor explosions outside the Nether, ender-pearl flight, nearby explosion terrain, and the finish of the local eating animation — all before the server confirms anything. It also sends a pending hotbar slot before mining, and it is fully configurable from the in-game settings menu on key **O**. An optional **Paper plugin** sends exact explosion block lists and rejection notices so the client can correct its previews sooner.
+**Misery Optimizer** (mod id `tung`) is a client-side Fabric mod for **Minecraft 1.21.11 and 26.3** that makes crystal PvP feel immediate on high-latency connections. On your client it previews end crystal placement and break effects, charged respawn anchor explosions outside the Nether, ender-pearl flight, nearby explosion terrain, and the finish of the local eating animation — all before the server confirms anything. It also sends a pending hotbar slot before mining, and it is fully configurable from the in-game settings menu on key **O**. An optional **Paper plugin** sends exact explosion block lists and rejection notices so the client can correct its previews sooner.
 
 ### Honest scope
 
@@ -28,24 +28,26 @@ The mod does **not** reduce network latency or server tick time. The server stay
 
 | Path | Contents |
 | --- | --- |
-| [`fabric/`](fabric/) | Fabric client mod source, Gradle wrapper, tests, and detailed feature documentation |
+| [`fabric/`](fabric/) | Minecraft 1.21.11 Fabric source, Gradle wrapper, tests, and detailed feature documentation |
+| [`fabric-26.3/`](fabric-26.3/) | Minecraft 26.3 Fabric source and build |
 | [`paper/`](paper/) | Optional Paper plugin source, Gradle wrapper, and server configuration |
-| [`jars/`](jars/) | Ready-to-install Minecraft 1.21.11 JARs |
+| [`jars/`](jars/) | Ready-to-install Minecraft JARs |
 
 ## 🔧 Install (client)
 
-1. Install **Fabric Loader 0.18.1 or newer** and **Fabric API** for Minecraft **1.21.11** and run **Java 21** or newer.
-2. Drop this jar into the client's `mods` folder:
+1. Install Fabric Loader and Fabric API for your Minecraft version. Minecraft **1.21.11** needs Loader **0.18.1+** and Java **21+**; Minecraft **26.3** needs Loader **0.19.5+** and Java **25+**.
+2. Put the matching client JAR in the `mods` folder. Keep only one Misery Optimizer client JAR there:
 
    | Project | Jar for your `mods` / `plugins` folder |
    | --- | --- |
    | Fabric client mod → `mods` | [`jars/MiseryOptimizer-Fabric-1.21.11-1.4.6.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.6.jar) |
+   | Fabric 26.3 client mod → `mods` | [`jars/MiseryOptimizer-Fabric-26.3-1.5.0.jar`](jars/MiseryOptimizer-Fabric-26.3-1.5.0.jar) |
    | Paper plugin (optional) → `plugins` | [`jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar`](jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar) |
 
 3. Press **O** in game to open the settings menu: crystal break prediction, crystal placement preview, anchor feedback, ender-pearl projectile preview with adjustable server handoff (0–9 ticks), safe outline terrain preview with a maximum number of predicted blocks (128–768), early hotbar synchronization before mining, and local eating animation completion at the normal item duration.
 4. Rebind the settings key under **Options → Controls → Key Binds → Misery Optimizer**. Pearl prediction and terrain preview are off by default. Turn **Terrain preview** on to see safe outlines; the older temporary-hole preview is available by turning **Safe outlines** off. Existing settings in `config/tung.json` keep their saved values.
 
-See [`fabric/README.md`](fabric/README.md) for full behavior, configuration, and test details.
+See [`fabric/README.md`](fabric/README.md) for full behavior and configuration. The 26.3 port has its own [build notes](fabric-26.3/README.md).
 
 For a Modrinth upload, use the version settings, file hash, and publishing notes in [`MODRINTH_UPLOAD.md`](MODRINTH_UPLOAD.md).
 
@@ -57,7 +59,7 @@ Details: [`paper/README.md`](paper/README.md).
 
 ## ⚙️ Building
 
-Run `./gradlew clean build` from `fabric/` or `paper/` with **JDK 21** or newer. The installable JAR appears in that project's `build/libs/`; the checked-in `jars/` are the release builds from these sources.
+Run `./gradlew clean build` from `fabric/` or `paper/` with **JDK 21** or newer, or from `fabric-26.3/` with **JDK 25** or newer. The installable JAR appears in that project's `build/libs/`; the checked-in `jars/` are the release builds from these sources.
 
 ## 🏷️ Credits & license
 
