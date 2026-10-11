@@ -1,10 +1,10 @@
-# Misery Optimizer 1.4.5 for Minecraft 1.21.11
+# Misery Optimizer 1.4.6 for Minecraft 1.21.11
 
 Misery Optimizer is a Fabric client mod that makes crystal PvP, anchors, pearls, and explosion terrain respond immediately on high-latency connections. It works without a server plugin. The optional **MiseryOptimizerPaper** plugin adds server feedback for more precise reconciliation.
 
 ## Install and settings
 
-Install Fabric Loader **0.18.1 or newer** for **Minecraft 1.21.11** and Fabric API for 1.21.11. Put `MiseryOptimizer-Fabric-1.21.11-1.4.5.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `MiseryOptimizer-Paper-1.21.11-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder. This release is build-checked with Loader 0.18.1 and 0.19.5; it does not support other Minecraft versions.
+Install Fabric Loader **0.18.1 or newer** for **Minecraft 1.21.11** and Fabric API for 1.21.11. Put `MiseryOptimizer-Fabric-1.21.11-1.4.6.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `MiseryOptimizer-Paper-1.21.11-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder. This release is build-checked with Loader 0.18.1 and 0.19.5; it does not support other Minecraft versions.
 
 Keep only one Misery Optimizer client JAR in the profile. If a launcher still fails, collect that launcher's complete game log or crash report; a loader incompatibility message, mixin error, and missing Fabric API require different fixes.
 
@@ -15,14 +15,14 @@ Press **O** in game to open the settings screen. Rebind it through **Options →
 - Crystal placement preview
 - Anchor sound and particle feedback
 - Ender-pearl projectile preview and adjustable server handoff (0–9 ticks)
-- Explosion block preview with safe outlines by default
+- Optional explosion block preview with safe outlines when enabled
 - Early hotbar synchronization before mining
 - Faster local correction of rejected block placement and breaking when the Paper plugin is installed
 - Local eating animation completion at the normal item duration
 - Maximum number of previewed blocks (128–768)
 - Extra prediction time (0–2000 ms beyond the ping-based timeout)
 
-Pearl projectile preview is off by default. All other previews and the early slot sync are enabled by default. Safe outlines are the default for new and existing configs that do not specify `safeTerrainPreview`. Existing `config/tung.json` settings remain in effect; turn off pearl preview in the menu if that file already has it enabled. Turning off the terrain preview or changing the safe-outlines setting clears pending previews immediately.
+Pearl projectile preview and terrain preview are off by default. The other previews and early slot sync are enabled by default. Safe outlines are used when terrain preview is turned on, unless you turn **Safe outlines** off. Existing `config/tung.json` settings remain in effect; if terrain preview was already saved as on, turn it off once in the menu. Turning off the terrain preview or changing the safe-outlines setting clears pending previews immediately.
 
 ## What happens in play
 
@@ -68,8 +68,8 @@ The companion plugin also loaded on Paper 1.21.11 build 132. A protocol test cli
 
 ## Build
 
-Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-optimizer-fabric-1.4.5.jar` as `MiseryOptimizer-Fabric-1.21.11-1.4.5.jar`; the `-sources.jar` is for developers.
+Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-optimizer-fabric-1.4.6.jar` as `MiseryOptimizer-Fabric-1.21.11-1.4.6.jar`; the `-sources.jar` is for developers.
 
-The 1.4.5 source builds and passes tests with both Fabric Loader 0.18.1 and 0.19.5. A muted development client entered a world and exited cleanly on both loader versions; the crystal outline effect was checked on 0.18.1. The packaged release JAR is built against 0.18.1. These checks do not establish compatibility with every launcher or other installed mod.
+The 1.4.6 source builds and passes tests with both Fabric Loader 0.18.1 and 0.19.5. The previous 1.4.5 implementation entered a world and exited cleanly on both loader versions; its crystal outline effect was checked on 0.18.1. Version 1.4.6 changes only the terrain-preview default. The packaged release JAR is built against 0.18.1. These checks do not establish compatibility with every launcher or other installed mod.
 
 License: CC0-1.0.
