@@ -5,7 +5,7 @@
   "name": "Misery Optimizer",
   "description": "Client-side combat responsiveness for crystals, anchors, pearls, eating visuals, and rejected block actions with an in-game settings menu.",
   "authors": ["Tung"],
-  "license": "CC0-1.0",
+  "license": "ARR",
   "environment": "client",
   "icon": "assets/tung/icon.png",
   "entrypoints": {

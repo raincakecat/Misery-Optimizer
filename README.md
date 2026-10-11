@@ -13,7 +13,7 @@
   <a href="#-install-client"><img src="https://img.shields.io/badge/Java-21%20%7C%2025-blue" alt="Java 21 or 25"></a>
   <a href="#-install-client"><img src="https://img.shields.io/badge/requires-Fabric%20API-blueviolet" alt="Fabric API"></a>
   <a href="#-install-client"><img src="https://img.shields.io/badge/Mod%20ID-tung-orange" alt="Mod ID tung"></a>
-  <img src="https://img.shields.io/badge/License-CC0--1.0-lightgrey" alt="CC0-1.0">
+  <img src="https://img.shields.io/badge/License-All%20Rights%20Reserved-lightgrey" alt="All Rights Reserved">
 </p>
 
 ---
@@ -65,6 +65,6 @@ Run `./gradlew clean build` from `fabric/` or `paper/` with **JDK 21** or newer,
 
 Made by **raincakecat**.
 
-Both projects are released under **CC0-1.0** — see their `LICENSE` files.
+Current releases are **All Rights Reserved** — see the `LICENSE` files. Earlier CC0 versions retain their original permissions.
 
 <p align="center"><sub>tung tung tung 🥁</sub></p>

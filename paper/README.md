@@ -19,4 +19,4 @@ This is a responsiveness and reconciliation companion, not a server tick optimiz
 
 `./gradlew clean build` with Java 21 produces the plugin JAR. Paper 1.21.11 build 132 loaded and enabled the plugin. A protocol test client registered the feedback channel, activated a charged respawn anchor in the Overworld, and received an 814-byte explosion feedback packet with 262 block positions. With a test protection plugin, ordinary placement, breaking, and golden-apple consumption were canceled and emitted rejection packets. Server blocks remained unchanged. The Fabric client also connected to the live Paper server and exercised its crystal, anchor, block, food-use, and pearl code paths. Client-side visual restoration after an ordinary block cancellation has not been manually inspected.
 
-License: CC0-1.0.
+Current releases: All Rights Reserved. Earlier CC0 versions keep their original permissions.

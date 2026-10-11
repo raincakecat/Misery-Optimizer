@@ -72,4 +72,4 @@ Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-opt
 
 The 1.4.6 source builds and passes tests with both Fabric Loader 0.18.1 and 0.19.5. The previous 1.4.5 implementation entered a world and exited cleanly on both loader versions; its crystal outline effect was checked on 0.18.1. Version 1.4.6 changes only the terrain-preview default. The packaged release JAR is built against 0.18.1. These checks do not establish compatibility with every launcher or other installed mod.
 
-License: CC0-1.0.
+Current releases: All Rights Reserved. Earlier CC0 versions keep their original permissions.

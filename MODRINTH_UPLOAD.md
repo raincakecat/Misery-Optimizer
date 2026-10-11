@@ -2,7 +2,7 @@
 
 ## Minecraft 26.3 build
 
-Upload [`jars/MiseryOptimizer-Fabric-26.3-1.5.0.jar`](jars/MiseryOptimizer-Fabric-26.3-1.5.0.jar) as a **separate Fabric version** numbered `1.5.0`, targeting **Minecraft 26.3 only**. It requires Fabric Loader 0.19.5 or newer, Fabric API for 26.3, and Java 25 or newer. SHA-256: `A89BEA8E619F12A3FC837BAECEA5FA744BA092ED9EACD321228F7871B50C2718`.
+Upload [`jars/MiseryOptimizer-Fabric-26.3-1.5.0.jar`](jars/MiseryOptimizer-Fabric-26.3-1.5.0.jar) as a **separate Fabric version** numbered `1.5.0`, targeting **Minecraft 26.3 only**. It requires Fabric Loader 0.19.5 or newer, Fabric API for 26.3, and Java 25 or newer. SHA-256: `E4F44D3CC7173534CA28998618D10AE56FC6C7B668793C106B5FF53DB6E6AF1E`.
 
 The 26.3 source builds, passes its test task, and reached the main menu in a muted Fabric development client. Gameplay features have not yet been exercised in a 26.3 world. The optional Paper plugin below targets 1.21.11 only.
 
@@ -17,10 +17,10 @@ The 26.3 source builds, passes its test task, and reached the main menu in a mut
 - Loader: **Fabric only**
 - Environment: **Client required; server unsupported**
 - Main file: [`jars/MiseryOptimizer-Fabric-1.21.11-1.4.6.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.6.jar)
-- SHA-256: `89A3391324A4067278A9D48ED02737DD33BBC4B981258118FBF97F6D13F4CFCD`
+- SHA-256: `5972C7C8575A095BFDD102386863E5FEE1C72D5AE32E364258311268C98509F5`
 - Required dependency: Fabric API for Minecraft 1.21.11
 - Runtime requirements: Fabric Loader 0.18.1 or newer; Java 21 or newer
-- License: CC0-1.0
+- License: All Rights Reserved (ARR)
 
 Upload the Fabric JAR as the main file. The Paper plugin is optional server software with different functionality and should have its own plugin project or version, not be attached as an additional file to this Fabric version.
 
