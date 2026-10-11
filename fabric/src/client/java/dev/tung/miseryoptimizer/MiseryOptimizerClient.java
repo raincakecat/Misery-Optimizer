@@ -37,7 +37,7 @@ public final class MiseryOptimizerClient implements ClientModInitializer {
     public void onInitializeClient() {
         MiseryOptimizerFeedback.register();
         WorldRenderEvents.END_EXTRACTION.register(ExplosionPreview::extractSafePreview);
-        WorldRenderEvents.BEFORE_DEBUG_RENDER.register(ExplosionPreview::renderSafePreview);
+        WorldRenderEvents.AFTER_ENTITIES.register(ExplosionPreview::renderSafePreview);
         openConfig = KeyBindingHelper.registerKeyBinding(new KeyMapping(
             "key.tung.open_config", GLFW.GLFW_KEY_O, KEY_CATEGORY));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

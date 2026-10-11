@@ -1,10 +1,10 @@
-# Misery Optimizer 1.4.4 for Minecraft 1.21.11
+# Misery Optimizer 1.4.5 for Minecraft 1.21.11
 
 Misery Optimizer is a Fabric client mod that makes crystal PvP, anchors, pearls, and explosion terrain respond immediately on high-latency connections. It works without a server plugin. The optional **MiseryOptimizerPaper** plugin adds server feedback for more precise reconciliation.
 
 ## Install and settings
 
-Install Fabric Loader **0.18.1 or newer** for **Minecraft 1.21.11** and Fabric API for 1.21.11. Put `MiseryOptimizer-Fabric-1.21.11-1.4.4.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `MiseryOptimizer-Paper-1.21.11-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder. This release is build-checked with Loader 0.18.1 and 0.19.5; it does not support other Minecraft versions.
+Install Fabric Loader **0.18.1 or newer** for **Minecraft 1.21.11** and Fabric API for 1.21.11. Put `MiseryOptimizer-Fabric-1.21.11-1.4.5.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `MiseryOptimizer-Paper-1.21.11-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder. This release is build-checked with Loader 0.18.1 and 0.19.5; it does not support other Minecraft versions.
 
 Keep only one Misery Optimizer client JAR in the profile. If a launcher still fails, collect that launcher's complete game log or crash report; a loader incompatibility message, mixin error, and missing Fabric API require different fixes.
 
@@ -55,7 +55,7 @@ When MiseryOptimizerPaper is installed, the server sends its actual crystal and 
 
 ## Verification
 
-`./gradlew clean build` passes the unit tests and produces the remapped installation JAR. Version 1.4.4 has build checks only; the new outline rendering has not been visually tested. Earlier live Fabric 1.21.11 client tests of the 1.4 implementation against Paper 1.21.11 build 132 verified:
+`./gradlew clean build` passes the unit tests and produces the remapped installation JAR. During a live 1.4.4 world check, the new outline renderer crashed because its draw callback ran before Fabric had prepared the world render state. Version 1.4.5 uses the post-entity draw callback. A muted Fabric 1.21.11 client on Loader 0.18.1 entered a creative world, opened the settings screen, showed safe outlines around blocks predicted to break from a summoned end-crystal explosion, cleared the outlines after confirmation, and exited cleanly. Earlier live Fabric 1.21.11 client tests of the 1.4 implementation against Paper 1.21.11 build 132 verified:
 
 - A crystal attack entered the hidden state and received the server's removal.
 - A charged anchor previewed nearby blocks and server updates cleared the prediction. A glowstone charge did not trigger an explosion preview; the next charged-anchor click did.
@@ -68,8 +68,8 @@ The companion plugin also loaded on Paper 1.21.11 build 132. A protocol test cli
 
 ## Build
 
-Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-optimizer-fabric-1.4.4.jar` as `MiseryOptimizer-Fabric-1.21.11-1.4.4.jar`; the `-sources.jar` is for developers.
+Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-optimizer-fabric-1.4.5.jar` as `MiseryOptimizer-Fabric-1.21.11-1.4.5.jar`; the `-sources.jar` is for developers.
 
-The 1.4.4 source builds and passes tests with both Fabric Loader 0.18.1 and 0.19.5. The packaged release JAR is built against 0.18.1. These build checks do not establish compatibility with every launcher or other installed mod.
+The 1.4.5 source builds and passes tests with both Fabric Loader 0.18.1 and 0.19.5. A muted development client entered a world and exited cleanly on both loader versions; the crystal outline effect was checked on 0.18.1. The packaged release JAR is built against 0.18.1. These checks do not establish compatibility with every launcher or other installed mod.
 
 License: CC0-1.0.

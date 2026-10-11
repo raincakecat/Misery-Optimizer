@@ -39,7 +39,7 @@ The mod does **not** reduce network latency or server tick time. The server stay
 
    | Project | Jar for your `mods` / `plugins` folder |
    | --- | --- |
-   | Fabric client mod → `mods` | [`jars/MiseryOptimizer-Fabric-1.21.11-1.4.4.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.4.jar) |
+   | Fabric client mod → `mods` | [`jars/MiseryOptimizer-Fabric-1.21.11-1.4.5.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.5.jar) |
    | Paper plugin (optional) → `plugins` | [`jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar`](jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar) |
 
 3. Press **O** in game to open the settings menu: crystal break prediction, crystal placement preview, anchor feedback, ender-pearl projectile preview with adjustable server handoff (0–9 ticks), safe outline terrain preview with a maximum number of predicted blocks (128–768), early hotbar synchronization before mining, and local eating animation completion at the normal item duration.
