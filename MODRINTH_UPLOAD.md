@@ -46,7 +46,7 @@ Install the Fabric JAR on the client with Fabric API. The optional Paper plugin 
 
 - The 1.4.6 source builds and passes tests on Fabric Loader 0.18.1 and 0.19.5. Its installable JAR was built against 0.18.1.
 - The 1.4.5 rendering code entered a world on both loader versions. In a muted client on 0.18.1, a crystal explosion produced orange outlines that cleared after confirmation. Version 1.4.6 only changes the terrain-preview default; no new live game test was run for 1.4.6.
-- The [GitHub repository](https://github.com/raincakecat/Misery-Optimizer) is currently **private**. Do not present it as a public source or issue link unless you choose to make it public.
+- The [GitHub repository](https://github.com/raincakecat/Misery-Optimizer) is public and can be used as the source link. Current releases are marked All Rights Reserved; earlier CC0 versions in Git history retain their original permissions.
 - This suggested description and changelog were written with AI assistance. If used on the project page, select Modrinth's **AI-generated text** disclosure. Review whether **AI-generated code** or **AI-generated assets** disclosures also apply to the project, and do not use any AI-generated image as the icon or a gallery image. Modrinth may reject projects that are primarily AI-generated.
 - The mod changes multiplayer combat feedback. Review Modrinth's [cheats and hacks rule](https://modrinth.com/legal/rules) before submitting; the optional Paper plugin is not a server-side opt-out. Approval is Modrinth's decision.
 
