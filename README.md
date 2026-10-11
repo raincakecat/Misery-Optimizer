@@ -47,6 +47,8 @@ The mod does **not** reduce network latency or server tick time. The server stay
 
 See [`fabric/README.md`](fabric/README.md) for full behavior, configuration, and test details.
 
+For a Modrinth upload, use the version settings, file hash, and publishing notes in [`MODRINTH_UPLOAD.md`](MODRINTH_UPLOAD.md).
+
 ## 🐟 Optional Paper plugin
 
 For the tightest reconciliation, install [`MiseryOptimizer-Paper-1.21.11-1.1.0.jar`](jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar) on a Paper 1.21.11 server (Java 21) and restart. It sends exact server block lists for crystal and charged-anchor explosions (defaults: 2048 max blocks, 96-block range, 16 KiB per player per tick — see `plugins/MiseryOptimizerPaper/config.yml`) and rejection notices when another plugin cancels a crystal hit, anchor use, pearl throw, ordinary block placement/breaking, or food consumption. The client mod works fine without it.
