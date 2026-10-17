@@ -36,7 +36,10 @@ public final class MiseryOptimizerClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         MiseryOptimizerFeedback.register();
-        WorldRenderEvents.END_EXTRACTION.register(ExplosionPreview::extractSafePreview);
+        WorldRenderEvents.END_EXTRACTION.register(context -> {
+            ClientDiagnostics.frame();
+            ExplosionPreview.extractSafePreview(context);
+        });
         WorldRenderEvents.AFTER_ENTITIES.register(ExplosionPreview::renderSafePreview);
         openConfig = KeyBindingHelper.registerKeyBinding(new KeyMapping(
             "key.tung.open_config", GLFW.GLFW_KEY_O, KEY_CATEGORY));
@@ -61,6 +64,7 @@ public final class MiseryOptimizerClient implements ClientModInitializer {
             BlockActionPreview.clear();
             FoodUsePreview.clear();
             CRYSTAL_EFFECTS.clear();
+            ClientDiagnostics.clear();
         });
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             // Fail at startup if a packet or interaction mixin no longer matches 1.21.11.
@@ -81,8 +85,10 @@ public final class MiseryOptimizerClient implements ClientModInitializer {
         boolean fresh = !PREDICTIONS.isCrystalPending(crystal.getId());
         if (CONFIG.crystals) {
             PREDICTIONS.predictCrystal(crystal.getId(), currentPing(), CONFIG.extraGraceMillis);
+            if (fresh) ClientDiagnostics.TIMING.startCrystal(crystal.getId());
         }
-        if (CONFIG.crystalEffects && fresh) {
+        if (CONFIG.crystalEffects && fresh
+            && ClientDiagnostics.showEffect(crystal.position(), CONFIG.adaptiveEffects)) {
             Minecraft minecraft = Minecraft.getInstance();
             Vec3 center = crystal.position();
             minecraft.level.playLocalSound(center.x, center.y, center.z,
@@ -108,16 +114,19 @@ public final class MiseryOptimizerClient implements ClientModInitializer {
 
     public static void confirmCrystal(int entityId) {
         PREDICTIONS.confirmCrystal(entityId);
+        ClientDiagnostics.TIMING.confirmCrystal(entityId);
     }
 
     public static void rejectCrystal(int entityId) {
         PREDICTIONS.confirmCrystal(entityId);
+        ClientDiagnostics.TIMING.rejectCrystal(entityId);
         ExplosionPreview.rejectCrystal(entityId);
         CRYSTAL_EFFECTS.removeIf(effect -> effect.entityId == entityId);
     }
 
     public static void rejectAnchor(BlockPos pos) {
         PREDICTIONS.confirmAnchor(pos.asLong());
+        ClientDiagnostics.TIMING.rejectAnchor(pos.asLong());
         ExplosionPreview.rejectAnchor(pos);
     }
 
@@ -151,8 +160,10 @@ public final class MiseryOptimizerClient implements ClientModInitializer {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null) return;
         Vec3 center = pos.getCenter();
-        if (CONFIG.anchors && !PREDICTIONS.isAnchorPending(pos.asLong())) {
+        if (CONFIG.anchors && !PREDICTIONS.isAnchorPending(pos.asLong())
+            && ClientDiagnostics.showEffect(center, CONFIG.adaptiveEffects)) {
             PREDICTIONS.predictAnchor(pos.asLong(), currentPing(), CONFIG.extraGraceMillis);
+            ClientDiagnostics.TIMING.startAnchor(pos.asLong());
             minecraft.level.playLocalSound(center.x, center.y, center.z,
                 SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 4.0F,
                 (1.0F + (minecraft.level.random.nextFloat() - minecraft.level.random.nextFloat()) * 0.2F) * 0.7F,
@@ -173,6 +184,7 @@ public final class MiseryOptimizerClient implements ClientModInitializer {
     public static void confirmAnchorExplosion(Vec3 center) {
         if (predictedAnchorExplosion(center)) {
             PREDICTIONS.confirmAnchor(BlockPos.containing(center).asLong());
+            ClientDiagnostics.TIMING.confirmAnchor(BlockPos.containing(center).asLong());
         }
     }
 
@@ -209,6 +221,7 @@ public final class MiseryOptimizerClient implements ClientModInitializer {
     }
 
     static long predictionTimeoutMillis() {
-        return PredictionRegistry.timeoutMillis(currentPing(), CONFIG.extraGraceMillis);
+        return ClientDiagnostics.TIMING.timeoutMillis(currentPing(), CONFIG.extraGraceMillis,
+            CONFIG.adaptivePredictionTiming);
     }
 }

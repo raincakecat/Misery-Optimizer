@@ -40,11 +40,11 @@ The mod does **not** reduce network latency or server tick time. The server stay
 
    | Project | Jar for your `mods` / `plugins` folder |
    | --- | --- |
-   | Fabric client mod → `mods` | [`jars/MiseryOptimizer-Fabric-1.21.11-1.4.6.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.6.jar) |
-   | Fabric 26.3 client mod → `mods` | [`jars/MiseryOptimizer-Fabric-26.3-1.5.0.jar`](jars/MiseryOptimizer-Fabric-26.3-1.5.0.jar) |
+   | Fabric client mod → `mods` | [`jars/MiseryOptimizer-Fabric-1.21.11-1.4.7.jar`](jars/MiseryOptimizer-Fabric-1.21.11-1.4.7.jar) |
+   | Fabric 26.3 client mod → `mods` | [`jars/MiseryOptimizer-Fabric-26.3-1.5.1.jar`](jars/MiseryOptimizer-Fabric-26.3-1.5.1.jar) |
    | Paper plugin (optional) → `plugins` | [`jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar`](jars/MiseryOptimizer-Paper-1.21.11-1.1.0.jar) |
 
-3. Press **O** in game to open the settings menu: crystal break prediction, crystal placement preview, anchor feedback, ender-pearl projectile preview with adjustable server handoff (0–9 ticks), safe outline terrain preview with a maximum number of predicted blocks (128–768), early hotbar synchronization before mining, and local eating animation completion at the normal item duration.
+3. Press **O** in game to open the settings menu, or open **Mod Menu → Misery Optimizer → Configure** when Mod Menu is installed. The **Performance...** page contains four optional switches: adaptive explosion effects, a per-frame terrain scan budget, response-based prediction timing, and a diagnostics screen. All four default to off. Mod Menu is optional; Fabric API is required.
 4. Rebind the settings key under **Options → Controls → Key Binds → Misery Optimizer**. Pearl prediction and terrain preview are off by default. Turn **Terrain preview** on to see safe outlines; the older temporary-hole preview is available by turning **Safe outlines** off. Existing settings in `config/tung.json` keep their saved values.
 
 See [`fabric/README.md`](fabric/README.md) for full behavior and configuration. The 26.3 port has its own [build notes](fabric-26.3/README.md).

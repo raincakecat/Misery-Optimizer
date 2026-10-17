@@ -9,7 +9,8 @@
   "environment": "client",
   "icon": "assets/tung/icon.png",
   "entrypoints": {
-    "client": ["dev.tung.miseryoptimizer.MiseryOptimizerClient"]
+    "client": ["dev.tung.miseryoptimizer.MiseryOptimizerClient"],
+    "modmenu": ["dev.tung.miseryoptimizer.MiseryOptimizerModMenu"]
   },
   "mixins": [
     {

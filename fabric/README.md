@@ -1,14 +1,23 @@
-# Misery Optimizer 1.4.6 for Minecraft 1.21.11
+# Misery Optimizer 1.4.7 for Minecraft 1.21.11
 
 Misery Optimizer is a Fabric client mod that makes crystal PvP, anchors, pearls, and explosion terrain respond immediately on high-latency connections. It works without a server plugin. The optional **MiseryOptimizerPaper** plugin adds server feedback for more precise reconciliation.
 
 ## Install and settings
 
-Install Fabric Loader **0.18.1 or newer** for **Minecraft 1.21.11** and Fabric API for 1.21.11. Put `MiseryOptimizer-Fabric-1.21.11-1.4.6.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `MiseryOptimizer-Paper-1.21.11-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder. This release is build-checked with Loader 0.18.1 and 0.19.5; it does not support other Minecraft versions.
+Install Fabric Loader **0.18.1 or newer** for **Minecraft 1.21.11** and Fabric API for 1.21.11. Put `MiseryOptimizer-Fabric-1.21.11-1.4.7.jar` in your client `mods` folder and run Java 21 or newer. For server feedback, put `MiseryOptimizer-Paper-1.21.11-1.1.0.jar` in a Paper 1.21.11 server's `plugins` folder. This release is build-checked with Loader 0.18.1 and 0.19.5; it does not support other Minecraft versions.
 
 Keep only one Misery Optimizer client JAR in the profile. If a launcher still fails, collect that launcher's complete game log or crash report; a loader incompatibility message, mixin error, and missing Fabric API require different fixes.
 
 Press **O** in game to open the settings screen. Rebind it through **Options → Controls → Key Binds → Misery Optimizer → Open Misery Optimizer settings**. Minecraft saves the key assignment in `options.txt`; the settings below save to `config/tung.json` in the game directory:
+
+With optional **Mod Menu** installed, use **Mod Menu → Misery Optimizer → Configure** to open the same settings screen. Its **Performance...** page has four independent switches, all off by default:
+
+- **Adaptive effects:** skips duplicate local explosion sound and particle bursts close together during heavy crystal or anchor fights.
+- **Preview frame budget:** spreads terrain-preview ray scans across game ticks with a 2 ms slice target; a scan may be canceled if authoritative server feedback arrives first.
+- **Adaptive prediction timing:** uses observed server response times to extend preview expiry when confirmations are slow, while keeping the server authoritative.
+- **Diagnostics:** enables a read-only screen with frame time, preview scan time, prediction confirmations and corrections, and effect counts. It collects local session data only.
+
+The four switches work without Mod Menu through the **O** key as well. The preview scan budget matters only when terrain preview is enabled.
 
 - Crystal break prediction
 - Immediate crystal explosion sound and particle
@@ -68,8 +77,8 @@ The companion plugin also loaded on Paper 1.21.11 build 132. A protocol test cli
 
 ## Build
 
-Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-optimizer-fabric-1.4.6.jar` as `MiseryOptimizer-Fabric-1.21.11-1.4.6.jar`; the `-sources.jar` is for developers.
+Run `./gradlew clean build` with JDK 21 or newer. Install `build/libs/misery-optimizer-fabric-1.4.7.jar` as `MiseryOptimizer-Fabric-1.21.11-1.4.7.jar`; the `-sources.jar` is for developers.
 
-The 1.4.6 source builds and passes tests with both Fabric Loader 0.18.1 and 0.19.5. The previous 1.4.5 implementation entered a world and exited cleanly on both loader versions; its crystal outline effect was checked on 0.18.1. Version 1.4.6 changes only the terrain-preview default. The packaged release JAR is built against 0.18.1. These checks do not establish compatibility with every launcher or other installed mod.
+The 1.4.7 source builds and passes tests. Earlier builds were checked with Fabric Loader 0.18.1 and 0.19.5, and the 1.4.5 implementation entered a world on both loader versions. The new performance options have not been checked in a live world. These checks do not establish compatibility with every launcher or other installed mod.
 
 Current releases: All Rights Reserved. Earlier CC0 versions keep their original permissions.

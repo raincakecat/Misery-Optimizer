@@ -3,6 +3,7 @@ package dev.tung.miseryoptimizer;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.util.ArrayList;
+import java.util.ArrayDeque;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -33,11 +34,37 @@ final class ExplosionPreview {
     private static final double[] RAYS = createRays();
     private static final Map<Long, PredictedBlock> PENDING = new LinkedHashMap<>();
     private static final List<Batch> BATCHES = new ArrayList<>();
+    private static final ArrayDeque<Scan> SCANS = new ArrayDeque<>();
     private static ClientLevel predictedLevel;
 
     private record PredictedBlock(BlockState original, long deadline, boolean safe) {}
     private record Batch(Vec3 center, int crystalId, long anchorPos, Set<Long> blocks, long deadline) {}
     private record BlockInfo(BlockState state, float resistance, boolean outOfWorld) {}
+
+    private static final class Scan {
+        final ClientLevel level;
+        final Vec3 center;
+        final float radius;
+        final boolean removeOriginBlock;
+        final int crystalId;
+        final long deadline;
+        final BlockPos origin;
+        final BlockPos.MutableBlockPos scratch = new BlockPos.MutableBlockPos();
+        final Long2ObjectOpenHashMap<BlockInfo> blockCache = new Long2ObjectOpenHashMap<>();
+        final LongOpenHashSet candidates = new LongOpenHashSet();
+        int ray;
+
+        Scan(ClientLevel level, Vec3 center, float radius, boolean removeOriginBlock,
+                int crystalId, long deadline) {
+            this.level = level;
+            this.center = center;
+            this.radius = radius;
+            this.removeOriginBlock = removeOriginBlock;
+            this.crystalId = crystalId;
+            this.deadline = deadline;
+            this.origin = BlockPos.containing(center);
+        }
+    }
 
     private static double[] createRays() {
         double[] result = new double[1352 * 3];
@@ -80,64 +107,88 @@ final class ExplosionPreview {
         if (predictedLevel != level) {
             PENDING.clear();
             BATCHES.clear();
+            SCANS.clear();
             predictedLevel = level;
         }
         long now = System.nanoTime() / 1_000_000L;
         if (BATCHES.stream().anyMatch(batch -> batch.deadline > now
-                && batch.center.distanceToSqr(center) < 0.01)) return;
+                && batch.center.distanceToSqr(center) < 0.01)
+            || SCANS.stream().anyMatch(scan -> scan.center.distanceToSqr(center) < 0.01)) return;
 
+        Scan scan = new Scan(level, center, radius, removeOriginBlock, crystalId,
+            now + MiseryOptimizerClient.predictionTimeoutMillis());
+        if (MiseryOptimizerClient.config().previewFrameBudget) {
+            if (SCANS.size() < 4) SCANS.addLast(scan);
+        } else {
+            scan(scan, Integer.MAX_VALUE, Long.MAX_VALUE);
+            apply(scan);
+        }
+    }
+
+    private static void scan(Scan scan, int maxRays, long stopNanos) {
+        long started = System.nanoTime();
+        int processed = 0;
         // Same 16-cube boundary directions and 0.3-block step as vanilla.
         // The server's random ray strength and plugin block list are unknowable here.
-        Long2ObjectOpenHashMap<BlockInfo> blockCache = new Long2ObjectOpenHashMap<>();
-        LongOpenHashSet candidates = new LongOpenHashSet();
-        BlockPos origin = BlockPos.containing(center);
-        BlockPos.MutableBlockPos scratch = new BlockPos.MutableBlockPos();
-        for (int ray = 0; ray < RAYS.length; ray += 3) {
-            double dx = RAYS[ray];
-            double dy = RAYS[ray + 1];
-            double dz = RAYS[ray + 2];
-            double px = center.x;
-            double py = center.y;
-            double pz = center.z;
-            float power = radius; // middle of vanilla's 0.7â€“1.3 random range
+        while (scan.ray < RAYS.length && processed < maxRays
+            && System.nanoTime() < stopNanos) {
+            double dx = RAYS[scan.ray];
+            double dy = RAYS[scan.ray + 1];
+            double dz = RAYS[scan.ray + 2];
+            double px = scan.center.x;
+            double py = scan.center.y;
+            double pz = scan.center.z;
+            float power = scan.radius; // middle of vanilla's random ray range
             for (int step = 0; step < MAX_STEPS_PER_RAY && power > 0.0F; step++) {
-                scratch.set(Mth.floor(px), Mth.floor(py), Mth.floor(pz));
-                long key = scratch.asLong();
-                BlockInfo info = blockCache.get(key);
+                scan.scratch.set(Mth.floor(px), Mth.floor(py), Mth.floor(pz));
+                long key = scan.scratch.asLong();
+                BlockInfo info = scan.blockCache.get(key);
                 if (info == null) {
-                    if (level.isOutsideBuildHeight(scratch) || !level.hasChunkAt(scratch)) {
+                    if (scan.level.isOutsideBuildHeight(scan.scratch)
+                        || !scan.level.hasChunkAt(scan.scratch)) {
                         info = new BlockInfo(null, 0.0F, true);
                     } else {
-                        BlockState state = level.getBlockState(scratch);
-                        float resistance = removeOriginBlock && scratch.equals(origin) ? 0.0F
+                        BlockState state = scan.level.getBlockState(scan.scratch);
+                        float resistance = scan.removeOriginBlock && scan.scratch.equals(scan.origin) ? 0.0F
                             : Math.max(state.getBlock().getExplosionResistance(),
                                 state.getFluidState().getExplosionResistance());
                         info = new BlockInfo(state, resistance, false);
                     }
-                    blockCache.put(key, info);
+                    scan.blockCache.put(key, info);
                 }
                 if (info.outOfWorld) break;
-                boolean removedAtSource = removeOriginBlock && scratch.equals(origin);
+                boolean removedAtSource = scan.removeOriginBlock && scan.scratch.equals(scan.origin);
                 if (!info.state.isAir() && !removedAtSource) power -= (info.resistance + 0.3F) * 0.3F;
                 if (power > 0.0F && !info.state.isAir()
                     && info.state.getFluidState().isEmpty() && !info.state.hasBlockEntity()) {
-                    candidates.add(key);
+                    scan.candidates.add(key);
                 }
                 power -= 0.22500001F;
                 px += dx;
                 py += dy;
                 pz += dz;
             }
+            scan.ray += 3;
+            processed++;
+        }
+        ClientDiagnostics.scan(System.nanoTime() - started);
+    }
+
+    private static void apply(Scan scan) {
+        if (scan.level != Minecraft.getInstance().level || !MiseryOptimizerClient.config().terrainPreview
+            || System.nanoTime() / 1_000_000L > scan.deadline) return;
+        ClientLevel level = scan.level;
+        Vec3 center = scan.center;
+        Minecraft client = Minecraft.getInstance();
+        if (client.player == null) return;
+        if (scan.removeOriginBlock && level.hasChunkAt(scan.origin)
+            && !level.getBlockState(scan.origin).isAir()) {
+            scan.candidates.add(scan.origin.asLong());
         }
 
-        if (removeOriginBlock && level.hasChunkAt(origin) && !level.getBlockState(origin).isAir()) {
-            candidates.add(origin.asLong());
-        }
-
-        long deadline = System.nanoTime() / 1_000_000L
-            + MiseryOptimizerClient.predictionTimeoutMillis();
-        List<Long> ordered = new ArrayList<>(candidates.size());
-        for (long key : candidates) ordered.add(key);
+        long deadline = scan.deadline;
+        List<Long> ordered = new ArrayList<>(scan.candidates.size());
+        for (long key : scan.candidates) ordered.add(key);
         ordered.sort(Comparator.comparingDouble(key -> BlockPos.of(key).distToCenterSqr(center.x, center.y, center.z)));
         AABB playerSupport = client.player.getBoundingBox().inflate(0.15, 0.0, 0.15)
             .expandTowards(0.0, -0.6, 0.0);
@@ -161,7 +212,8 @@ final class ExplosionPreview {
                 batchBlocks.add(key);
             }
         }
-        BATCHES.add(new Batch(center, crystalId, removeOriginBlock ? origin.asLong() : Long.MIN_VALUE,
+        BATCHES.add(new Batch(center, scan.crystalId,
+            scan.removeOriginBlock ? scan.origin.asLong() : Long.MIN_VALUE,
             batchBlocks, deadline));
         if (BATCHES.size() > 32) BATCHES.removeFirst();
     }
@@ -178,8 +230,16 @@ final class ExplosionPreview {
                 nearest = distance;
             }
         }
-        if (match == null) return;
+        if (match == null) {
+            // Exact server feedback can arrive before a budgeted scan finishes.
+            // Do not apply a stale estimate after the authoritative result.
+            SCANS.removeIf(scan -> scan.center.distanceToSqr(center) < 0.75 * 0.75);
+            return;
+        }
         BATCHES.remove(match);
+        if (match.blocks.stream().anyMatch(key -> !exactBlocks.contains(key))) {
+            ClientDiagnostics.terrainCorrection();
+        }
         for (long key : match.blocks) {
             if (!exactBlocks.contains(key) && BATCHES.stream().noneMatch(batch -> batch.blocks.contains(key))) {
                 restore(key);
@@ -205,10 +265,12 @@ final class ExplosionPreview {
     }
 
     static void rejectCrystal(int id) {
+        SCANS.removeIf(scan -> scan.crystalId == id);
         reject(batch -> batch.crystalId == id);
     }
 
     static void rejectAnchor(BlockPos pos) {
+        SCANS.removeIf(scan -> scan.removeOriginBlock && scan.origin.equals(pos));
         reject(batch -> batch.anchorPos == pos.asLong());
     }
 
@@ -220,6 +282,7 @@ final class ExplosionPreview {
             return true;
         });
         for (Batch batch : rejected) {
+            ClientDiagnostics.terrainCorrection();
             for (long key : batch.blocks) {
                 if (BATCHES.stream().noneMatch(other -> other.blocks.contains(key))) restore(key);
             }
@@ -252,6 +315,20 @@ final class ExplosionPreview {
             return;
         }
         long now = System.nanoTime() / 1_000_000L;
+        if (!SCANS.isEmpty()) {
+            long stopNanos = System.nanoTime() + 2_000_000L;
+            while (!SCANS.isEmpty() && System.nanoTime() < stopNanos) {
+                Scan scan = SCANS.peekFirst();
+                if (scan.level != client.level || scan.deadline <= now) {
+                    SCANS.removeFirst();
+                    continue;
+                }
+                scan(scan, 128, stopNanos);
+                if (scan.ray < RAYS.length) break;
+                SCANS.removeFirst();
+                apply(scan);
+            }
+        }
         BATCHES.removeIf(batch -> batch.deadline <= now);
         Iterator<Map.Entry<Long, PredictedBlock>> iterator = PENDING.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -269,6 +346,7 @@ final class ExplosionPreview {
     static void clear() {
         PENDING.clear();
         BATCHES.clear();
+        SCANS.clear();
         predictedLevel = null;
     }
 

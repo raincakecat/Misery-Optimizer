@@ -105,8 +105,11 @@ final class MiseryOptimizerConfigScreen extends Screen {
             button.setMessage(pearlHandoffLabel());
             config.save();
         }).bounds(x, y + 176, 220, 20).build());
+        addRenderableWidget(Button.builder(Component.literal("Performance..."), button ->
+            minecraft.gui.setScreen(new MiseryOptimizerPerformanceScreen(this, config)))
+            .bounds(x, y + 202, 108, 20).build());
         addRenderableWidget(Button.builder(Component.literal("Done"), button -> onClose())
-            .bounds(x, y + 202, 220, 20).build());
+            .bounds(x + 112, y + 202, 108, 20).build());
     }
 
     @Override

@@ -28,6 +28,10 @@ final class MiseryOptimizerConfig {
     boolean slotSync = true;
     boolean blockCorrections = true;
     boolean foodTiming = true;
+    boolean adaptiveEffects = false;
+    boolean previewFrameBudget = false;
+    boolean adaptivePredictionTiming = false;
+    boolean diagnosticsEnabled = false;
     int maxPreviewBlocks = 512;
     int extraGraceMillis = 0;
     int pearlHandoffTicks = 6;
@@ -47,6 +51,10 @@ final class MiseryOptimizerConfig {
             config.slotSync = bool(json, "slotSync", true);
             config.blockCorrections = bool(json, "blockCorrections", true);
             config.foodTiming = bool(json, "foodTiming", true);
+            config.adaptiveEffects = bool(json, "adaptiveEffects", false);
+            config.previewFrameBudget = bool(json, "previewFrameBudget", false);
+            config.adaptivePredictionTiming = bool(json, "adaptivePredictionTiming", false);
+            config.diagnosticsEnabled = bool(json, "diagnosticsEnabled", false);
             config.maxPreviewBlocks = choice(json, "maxPreviewBlocks", 512, new int[] {128, 256, 512, 768});
             config.extraGraceMillis = choice(json, "extraGraceMillis", 0, new int[] {0, 500, 1000, 2000});
             config.pearlHandoffTicks = choice(json, "pearlHandoffTicks", 6, new int[] {0, 3, 6, 9});
@@ -68,6 +76,10 @@ final class MiseryOptimizerConfig {
         json.addProperty("slotSync", slotSync);
         json.addProperty("blockCorrections", blockCorrections);
         json.addProperty("foodTiming", foodTiming);
+        json.addProperty("adaptiveEffects", adaptiveEffects);
+        json.addProperty("previewFrameBudget", previewFrameBudget);
+        json.addProperty("adaptivePredictionTiming", adaptivePredictionTiming);
+        json.addProperty("diagnosticsEnabled", diagnosticsEnabled);
         json.addProperty("maxPreviewBlocks", maxPreviewBlocks);
         json.addProperty("extraGraceMillis", extraGraceMillis);
         json.addProperty("pearlHandoffTicks", pearlHandoffTicks);
