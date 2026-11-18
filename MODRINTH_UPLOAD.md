@@ -47,7 +47,6 @@ Install the Fabric JAR on the client with Fabric API. The optional Paper plugin 
 
 - The 1.4.7 and 1.5.1 source builds pass their test suites. Earlier 1.21.11 builds were checked with Fabric Loader 0.18.1 and 0.19.5; an earlier 26.3 build reached the main menu. The new performance options have not yet been exercised in a live world.
 - The [GitHub repository](https://github.com/raincakecat/Misery-Optimizer) is public and can be used as the source link. Current releases are marked All Rights Reserved; earlier CC0 versions in Git history retain their original permissions.
-- This suggested description and changelog were written with AI assistance. If used on the project page, select Modrinth's **AI-generated text** disclosure. Review whether **AI-generated code** or **AI-generated assets** disclosures also apply to the project, and do not use any AI-generated image as the icon or a gallery image. Modrinth may reject projects that are primarily AI-generated.
 - The mod changes multiplayer combat feedback. Review Modrinth's [cheats and hacks rule](https://modrinth.com/legal/rules) before submitting; the optional Paper plugin is not a server-side opt-out. Approval is Modrinth's decision.
 
 Modrinth references: [Content Rules](https://modrinth.com/legal/rules), [Content Disclosures](https://support.modrinth.com/en/articles/16567675-content-disclosures), [AI guidance](https://support.modrinth.com/en/articles/16551575-disclosure-and-usage-of-ai), and [Additional Files](https://support.modrinth.com/en/articles/8793363-additional-files).
